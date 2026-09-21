@@ -1,0 +1,5 @@
+MediJoApp.xcodeproj/
+.build/
+.compile
+.env
+**/.DS_Store
