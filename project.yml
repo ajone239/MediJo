@@ -19,9 +19,14 @@ targets:
         CODE_SIGN_STYLE: Automatic
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
-        INFOPLIST_KEY_NSHealthShareUsageDescription: "Reads mindfullness minutes."
-        INFOPLIST_KEY_NSHealthUpdateUsageDescription: "Writes mindfulness minutes."
         SWIFT_VERSION: "6.0"
+    info:
+      path: App/Info.plist
+      properties:
+        UIBackgroundModes: [audio]
+        NSUserNotificationsUsageDescription: "Notifies you at sit's end."
+        NSHealthShareUsageDescription: "Reads mindfullness minutes."
+        NSHealthUpdateUsageDescription: "Writes mindfulness minutes."
     entitlements:
       path: App/MediJo.entitlements
       properties:
