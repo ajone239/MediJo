@@ -18,12 +18,12 @@
 - [-] SwiftData model: `Sit` (date, duration, completed, journal fields)
 
 ## Root
-- [ ] `SessionPhase` enum: `.start` / `.running` / `.journaling`
-- [ ] Root view switches on phase, `withAnimation` + `.transition(.opacity)`
-- [ ] Persist last-used duration via `@AppStorage`
+- [x] `SessionPhase` enum: `.start` / `.running` / `.journaling`
+- [x] Root view switches on phase, `withAnimation` + `.transition(.opacity)`
+- [x] Persist last-used duration via `@AppStorage`
 
 ## Start screen
-- [ ] Wheel `Picker` for duration
+- [x] Wheel `Picker` for duration
 - [ ] Start button → `.running`
 - [ ] Menu button (top corner)
 
