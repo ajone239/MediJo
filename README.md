@@ -24,12 +24,12 @@
 
 ## Start screen
 - [x] Wheel `Picker` for duration
-- [ ] Start button → `.running`
+- [x] Start button → `.running`
 - [ ] Menu button (top corner)
 
 ## Timer screen
 - [ ] Store end `Date` on start — never decrement a counter
-- [ ] `TimelineView(.animation)` drives the arc
+- [x] `TimelineView(.animation)` drives the arc
 - [ ] Arc: `Circle().trim(from:to:)` + rounded `StrokeStyle` + `.rotationEffect`
 - [ ] Darken: `.statusBarHidden()`, `.persistentSystemOverlays(.hidden)`
 - [ ] `isIdleTimerDisabled = true` on appear, false on disappear
@@ -37,7 +37,7 @@
 - [ ] Handle scenePhase background/resume
 - [ ] Schedule completion notification for locked-phone case
 - [ ] Cancel / early-exit path → where does it go?
-- [ ] On complete → `.journaling`
+- [x] On complete → `.journaling`
 
 ## Journal screen
 - [ ] `Form` with metadata fields

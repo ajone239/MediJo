@@ -22,14 +22,14 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            switch activeSit?.state {
-            case .active:
-                RunningView {
-                    activeSit?.state = .journaling
+            switch activeSit {
+            case let s? where s.state == SitState.active:
+                RunningView(endsAt: s.endDate) {
+                    s.state = .journaling
                 }
-            case .journaling:
+            case let s? where s.state == SitState.journaling:
                 Button("Next->Picking") {
-                    activeSit?.state = .completed
+                    s.state = .completed
                 }
                 Text("Journal")
             default:
@@ -65,17 +65,5 @@ struct ContentView: View {
         )
         d.fetchLimit = 1
         return d
-    }
-}
-
-struct RunningView: View {
-    var onStart: () -> Void
-
-    var body: some View {
-        Text("frick you")
-        Button("Next->Journal") {
-            onStart()
-        }
-        Text("Running")
     }
 }

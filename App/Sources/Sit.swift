@@ -7,11 +7,13 @@ enum SitState: String, Codable, CaseIterable {
 
 enum SitTime: String, Codable, CaseIterable, Identifiable {
 
-    case five, ten, twentyfive, fortyfive, sixty
+    case debug, five, ten, twentyfive, fortyfive, sixty
     var id: Self { self }
 
     func toDuration() -> Duration {
         switch self {
+        case .debug:
+            return .seconds(5)
         case .five:
             return .seconds(5 * 60)
         case .fortyfive:
@@ -34,6 +36,11 @@ class Sit: Identifiable {
     var rawState: String
     var percentFocused: Int32
     var startDate: Date
+    @Transient
+    var endDate: Date {
+        let time = Double(self.duration.components.seconds)
+        return self.startDate.addingTimeInterval(time)
+    }
     var sitTime: SitTime
     @Transient var duration: Duration { self.sitTime.toDuration() }
 
