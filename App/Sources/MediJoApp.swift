@@ -28,10 +28,9 @@ struct ContentView: View {
                     s.state = .journaling
                 }
             case let s? where s.state == SitState.journaling:
-                Button("Next->Picking") {
+                JournalView {
                     s.state = .completed
                 }
-                Text("Journal")
             default:
                 PickingView(duration: $duration) {
                     let sit = Sit(time: duration)
@@ -65,5 +64,25 @@ struct ContentView: View {
         )
         d.fetchLimit = 1
         return d
+    }
+}
+
+struct JournalView: View {
+    let onComplete: () -> Void
+
+    @State var notes: String
+
+    @State private var percent: Double = 10
+
+    var body: some View {
+        Form {
+            Slider(value: $percent, in: 1...100, step: 5) {
+                Text("% Focus")
+            }
+            TextField("Notes", text: $notes, axis: .vertical)
+            Button("save") {
+                onComplete()
+            }
+        }
     }
 }
