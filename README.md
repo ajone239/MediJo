@@ -28,7 +28,7 @@
 - [ ] Menu button (top corner)
 
 ## Timer screen
-- [ ] Store end `Date` on start — never decrement a counter
+- [x] Store end `Date` on start — never decrement a counter
 - [x] `TimelineView(.animation)` drives the arc
 - [ ] Arc: `Circle().trim(from:to:)` + rounded `StrokeStyle` + `.rotationEffect`
 - [ ] Darken: `.statusBarHidden()`, `.persistentSystemOverlays(.hidden)`
@@ -40,17 +40,16 @@
 - [x] On complete → `.journaling`
 
 ## Journal screen
-- [ ] `Form` with metadata fields
-- [ ] `TextField(axis: .vertical)` for notes
-- [ ] `@FocusState` autofocus, `.scrollDismissesKeyboard(.interactively)`
-- [ ] `.interactiveDismissDisabled()`
-- [ ] Save → write `Sit` → back to `.start`
-- [ ] Skip option → still write the `Sit`?
+- [x] `Form` with metadata fields
+- [x] `TextField(axis: .vertical)` for notes
+- [x] `@FocusState` autofocus, `.scrollDismissesKeyboard(.interactively)`
+- [x] Save → write `Sit` → back to `.start`
+- [ ] style
 
 ## Menu island
 - [ ] `ZStack` overlay + `@Namespace` / `matchedGeometryEffect` from menu button
-- [ ] Segmented `Picker`: Settings | Past sits
-- [ ] Tap-outside + swipe to dismiss
+- [x] Segmented `Picker`: Settings | Past sits
+- [x] Tap-outside + swipe to dismiss
 - [ ] Decide: island vs `.sheet` + `.presentationDetents` fallback
 
 ## Settings

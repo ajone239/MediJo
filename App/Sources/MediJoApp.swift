@@ -13,41 +13,55 @@ struct ContentView: View {
     @AppStorage("defaultSitDuration") var duration: SitTime = .twentyfive
     @Environment(\.modelContext) private var context
 
-    @Query()
-    private var sits: [Sit]
-
     @Query(Self.current)
     private var inProgress: [Sit]
     private var activeSit: Sit? { inProgress.first }
 
+    @State
+    private var showingMenu = false
+
     var body: some View {
         VStack {
-            switch activeSit {
-            case let s? where s.state == SitState.active:
-                RunningView(endsAt: s.endDate) {
-                    s.state = .journaling
-                }
-            case let s? where s.state == SitState.journaling:
-                JournalView {
-                    s.state = .completed
-                }
-            default:
-                PickingView(duration: $duration) {
-                    let sit = Sit(time: duration)
-                    sit.state = .active
-                    context.insert(sit)
-                }
-            }
+            VStack {
+                switch activeSit {
+                case let s? where s.state == SitState.active:
+                    RunningView(endsAt: s.endDate) {
+                        s.state = .journaling
+                    }
+                case let s? where s.state == SitState.journaling:
+                    JournalView { percentFocused, notes in
+                        s.state = .completed
+                        s.percentFocused = percentFocused
+                        s.notes = notes
+                    }
+                default:
+                    ZStack {
+                        PickingView(duration: $duration) {
+                            let sit = Sit(time: duration)
+                            sit.state = .active
+                            context.insert(sit)
+                        }
+                        .sheet(isPresented: $showingMenu) {
+                            MenuIsland()
+                                .presentationDetents([.large])
+                                .presentationDragIndicator(.visible)
+                                .presentationContentInteraction(.scrolls)
 
-            HStack {
-                Button("clear") {
-                    for sit in sits {
-                        context.delete(sit)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .overlay(alignment: .topTrailing) {
+                        Button { /* toggle menu */
+                            showingMenu = true
+                        } label: {
+                            Image(systemName: "line.3.horizontal")
+                        }
+                        .padding()
                     }
                 }
-                Text(activeSit?.state.rawValue ?? "nope")
-                Text(String(sits.count))
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
         }
     }
 
@@ -67,21 +81,56 @@ struct ContentView: View {
     }
 }
 
-struct JournalView: View {
-    let onComplete: () -> Void
+struct MenuIsland: View {
 
-    @State var notes: String
+    enum MenuState: String, Codable, CaseIterable, Identifiable {
+        var id: Self { self }
+        case settings, pastSits
+    }
 
-    @State private var percent: Double = 10
+    @State private var state: MenuState = .pastSits
 
     var body: some View {
-        Form {
-            Slider(value: $percent, in: 1...100, step: 5) {
-                Text("% Focus")
+        VStack {
+            Picker("Menu Option", selection: $state) {
+                ForEach(MenuState.allCases) { s in
+                    Text(s.rawValue.capitalized).tag(MenuState?.some(s))
+                }
             }
-            TextField("Notes", text: $notes, axis: .vertical)
-            Button("save") {
-                onComplete()
+            .pickerStyle(.segmented)
+            switch state {
+            case .pastSits:
+                PastSits()
+            case .settings:
+                Text("settings")
+            }
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+    }
+}
+
+struct PastSits: View {
+    @Environment(\.modelContext) private var context
+
+    @Query()
+    private var sits: [Sit]
+
+    var body: some View {
+        VStack {
+            List {
+                ForEach(sits) { sit in
+                    HStack {
+                        Text(sit.startDate.formatted())
+                        Text("::")
+                        Text(sit.sitTime.rawValue)
+                    }
+                }
+            }
+            Button("Clear") {
+                for sit in sits {
+                    context.delete(sit)
+                }
             }
         }
     }
